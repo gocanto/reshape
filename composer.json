@@ -17,7 +17,11 @@
         "source": "https://github.com/gocanto/reshape",
         "issues": "https://github.com/gocanto/reshape/issues"
     },
-    "require": {},
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^8.29",
+        "nesbot/carbon": "^2.45"
+    },
     "autoload": {
         "psr-4": {
             "Gocanto\\Reshape\\": "src/Reshape"
