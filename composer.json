@@ -1,0 +1,35 @@
+{
+    "name": "gocanto/reshape",
+    "description": "Transformation pipeline",
+    "homepage": "https://github.com/gocanto/reshape",
+    "type": "php-bundle",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "keywords": ["php", "transformer", "reshape"],
+    "authors": [
+        {
+            "name": "Gustavo Ocanto",
+            "email": "gustavoocanto@gmail.com"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/gocanto/reshape",
+        "issues": "https://github.com/gocanto/reshape/issues"
+    },
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Gocanto\\Reshape\\": "src/Reshape"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gocanto\\Reshape\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    }
+}
