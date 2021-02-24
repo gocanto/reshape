@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Gocanto\Reshape;
 
-use Gocanto\Reshape\Contracts\ModelInterface;
-use Gocanto\Reshape\Contracts\PipeInterface;
+use Gocanto\Reshape\Contract\Entry;
+use Gocanto\Reshape\Contract\Pipe;
 use Illuminate\Support\Collection;
 
-abstract class ReshapeAbstract
+abstract class Reshape
 {
     public Version $version;
 
@@ -38,7 +38,7 @@ abstract class ReshapeAbstract
         return $data;
     }
 
-    private function shouldRunPipe(PipeInterface $pipe) : bool
+    private function shouldRunPipe(Pipe $pipe) : bool
     {
         return $this->version->includes($pipe->getVersion());
     }
@@ -58,7 +58,7 @@ abstract class ReshapeAbstract
         return $data;
     }
 
-    public function transformModel(?ModelInterface $item) : ?array
+    public function transformEntry(?Entry $item) : ?array
     {
         if ($item === null) {
             return null;

@@ -4,19 +4,30 @@ declare(strict_types=1);
 
 namespace Gocanto\Reshape;
 
-use Gocanto\Reshape\Contracts\PipeInterface;
+use Gocanto\Reshape\Contract\Pipe;
 
 class Pipeline
 {
     private array $pipes = [];
 
-    public function addPipe(PipeInterface $pipe) : void
+    public function add(array $pipes): void
     {
-        $this->pipes[] = $pipe;
+        foreach ($pipes as $pipe) {
+            $this->push($pipe);
+        }
+    }
+
+    public function push(Pipe $pipe) : void
+    {
+        if (\array_key_exists($pipe->getKey(), $this->pipes)) {
+            throw new ReshapeException("The given pipe {$pipe->getKey()} already exists.");
+        }
+
+        $this->pipes[$pipe->getKey()] = $pipe;
     }
 
     /**
-     * @return PipeInterface[]
+     * @return Pipe[]
      */
     public function get(): array
     {
