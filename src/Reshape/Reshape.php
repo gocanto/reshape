@@ -7,11 +7,15 @@ namespace Gocanto\Reshape;
 use Gocanto\Reshape\Contract\Entry;
 use Gocanto\Reshape\Contract\Pipe;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\Pure;
 
 abstract class Reshape
 {
     public Version $version;
 
+    /**
+     * @throws ReshapeException
+     */
     public function __construct(string | Version $version)
     {
         $this->version = \is_string($version) ? Version::fromDate($version) : $version;
@@ -67,6 +71,7 @@ abstract class Reshape
         return $this->transform($item);
     }
 
+    #[Pure]
     protected function getPipeline() : Pipeline
     {
         return new Pipeline;

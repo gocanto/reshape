@@ -6,6 +6,8 @@ namespace Gocanto\Reshape;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Carbon\Exceptions\InvalidFormatException;
+use JetBrains\PhpStorm\Pure;
 
 final class Version
 {
@@ -16,6 +18,22 @@ final class Version
         //
     }
 
+    /**
+     * @throws ReshapeException
+     */
+    public static function make(CarbonInterface | string | null $needle = null): self
+    {
+        if ($needle instanceof CarbonInterface) {
+            return self::fromCarbon($needle);
+        }
+
+        if (\is_string($needle)) {
+            return self::fromDate($needle);
+        }
+
+        return self::fromCarbon(CarbonImmutable::now());
+    }
+
     public static function fromCarbon(CarbonInterface $date): self
     {
         $version = new self();
@@ -24,10 +42,18 @@ final class Version
         return $version;
     }
 
+    /**
+     * @throws ReshapeException
+     */
     public static function fromDate(string $date): self
     {
         $version = new self();
-        $version->date = CarbonImmutable::parse($date)->startOfDay();
+
+        try {
+            $version->date = CarbonImmutable::parse($date)->startOfDay();
+        } catch (InvalidFormatException $exception) {
+            throw ReshapeException::fromThrowable($exception, 'The given date is invalid.');
+        }
 
         return $version;
     }
@@ -37,6 +63,7 @@ final class Version
         return $this->date;
     }
 
+    #[Pure]
     public function includes(Version $version): bool
     {
         return $version->getDate()->lessThanOrEqualTo($this->date);
