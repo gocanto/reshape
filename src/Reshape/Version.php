@@ -21,8 +21,12 @@ final class Version
     /**
      * @throws ReshapeException
      */
-    public static function make(CarbonInterface | string | null $needle = null): self
+    public static function make(mixed $needle = null): self
     {
+        if ($needle instanceof self) {
+            return $needle;
+        }
+
         if ($needle instanceof CarbonInterface) {
             return self::fromCarbon($needle);
         }

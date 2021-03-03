@@ -9,7 +9,7 @@ use Gocanto\Reshape\Contract\Pipe;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\Pure;
 
-abstract class Reshape
+abstract class ReshapeTransformer
 {
     public Version $version;
 
@@ -18,7 +18,7 @@ abstract class Reshape
      */
     public function __construct(string | Version $version)
     {
-        $this->version = \is_string($version) ? Version::fromDate($version) : $version;
+        $this->version = Version::make($version);
     }
 
     abstract protected function getBaseData(mixed $item) : array;
@@ -42,9 +42,15 @@ abstract class Reshape
         return $data;
     }
 
-    private function shouldRunPipe(Pipe $pipe) : bool
+    protected function shouldRunPipe(Pipe $pipe) : bool
     {
         return $this->version->includes($pipe->getVersion());
+    }
+
+    #[Pure]
+    protected function getPipeline() : Pipeline
+    {
+        return new Pipeline;
     }
 
     public function transformCollection(iterable $items) : array
@@ -69,11 +75,5 @@ abstract class Reshape
         }
 
         return $this->transform($item);
-    }
-
-    #[Pure]
-    protected function getPipeline() : Pipeline
-    {
-        return new Pipeline;
     }
 }
